@@ -1,0 +1,46 @@
+{% extends 'default/layout.html.twig' %}
+
+{% block title %}Accueil - {{ parent() }} {% endblock %}
+{% block ListeStage_body %}
+    <body>
+    <div class="card-body">
+        <h5>Liste des Entreprises</h5>
+        <div class="table-responsive">
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th scope="col">Raison Social</th>
+            <th scope="col">Tuteur</th>
+            <th scope="col">Poste</th>
+            <th scope="col">Ville</th>
+            <th scope="col">Code Postal</th>
+            <th scope="col">Adresse</th>
+            <th scope="col">Contact</th>
+            <th scope="col">Mail</th>
+            <th scope="col">Site</th>
+            <th scope="col">Commentaire</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for entreprise in ListeEntreprise %}
+        <tr>
+
+            <th scope="row">{{ entreprise.raisonsocialeEntreprise }}</th>
+            <td></td>
+            <td></td>
+            <td>{{ entreprise.villeEntreprise }}</td>
+            <td>{{ entreprise.cpEntreprise }}</td>
+            <td>{{ entreprise.adresseEntreprise }}</td>
+            <td>
+                Tel Entreprise -> {{ entreprise.telephoneEntreprise }}
+                <br>
+                Fax -> {{ entreprise.faxEntreprise }}</td>
+            <td></td>
+            <td></td>
+            <td>{{ entreprise.commentaireEntreprise }}</td>
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    </body>
+{% endblock %}
