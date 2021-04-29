@@ -2,14 +2,15 @@
 
 namespace App\Entity;
 
-use App\Repository\FormationRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * Formation
  *
  * @ORM\Table(name="formation")
- * @ORM\Entity(repositoryClass="App\Repository\Formation")
+ * @ORM\Entity
  */
 class Formation
 {
@@ -29,6 +30,21 @@ class Formation
      */
     private $libelleFormation;
 
+    /**
+     * @var \Doctrine\Common\Collections\Collection
+     *
+     * @ORM\ManyToMany(targetEntity="Entreprise", mappedBy="codePrefererFormation")
+     */
+    private $codePrefererEntreprise;
+
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->codePrefererEntreprise = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
     public function getCodeFormation(): ?int
     {
         return $this->codeFormation;
@@ -46,5 +62,31 @@ class Formation
         return $this;
     }
 
+    /**
+     * @return Collection|Entreprise[]
+     */
+    public function getCodePrefererEntreprise(): Collection
+    {
+        return $this->codePrefererEntreprise;
+    }
+
+    public function addCodePrefererEntreprise(Entreprise $codePrefererEntreprise): self
+    {
+        if (!$this->codePrefererEntreprise->contains($codePrefererEntreprise)) {
+            $this->codePrefererEntreprise[] = $codePrefererEntreprise;
+            $codePrefererEntreprise->addCodePrefererFormation($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCodePrefererEntreprise(Entreprise $codePrefererEntreprise): self
+    {
+        if ($this->codePrefererEntreprise->removeElement($codePrefererEntreprise)) {
+            $codePrefererEntreprise->removeCodePrefererFormation($this);
+        }
+
+        return $this;
+    }
 
 }

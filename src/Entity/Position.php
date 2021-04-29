@@ -2,14 +2,13 @@
 
 namespace App\Entity;
 
-use App\Repository\PositionRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * Position
  *
  * @ORM\Table(name="position")
- * @ORM\Entity(repositoryClass="App\Repository\Position")
+ * @ORM\Entity
  */
 class Position
 {

@@ -1,0 +1,115 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Liste des entreprises{% endblock %}
+
+{% block body %}
+
+<div class="card-body">
+    <h5>Liste des  entreprises</h5>
+
+
+
+
+<div id="accordion">
+    <div id="headingOne">
+        <div class="card-body">
+            <div class="col-sm-4">
+                <input class="form-control" id="Search" type="text" placeholder="Barre de recherche">
+            </div>
+        </div>
+    </div>
+</div>
+
+
+    <div class="listeEntreprise">
+    
+        <table class="table table-bordered">
+            <thead>
+            <tr>
+                <th scope="col">Raison sociale</th>
+                <th scope="col">Ville</th>
+                <th scope="col">Code postal</th>
+                <th scope="col">Adresse</th>
+                <th scope="col">Téléphone / Fax</th>
+                <th scope="col">Site</th>
+                <th scope="col">Commentaires</th>
+                <th scope="col" colspan="2">Contact</th>
+            </tr>
+            </thead>
+            <tbody id="TableEntreprise">
+            {% for entreprise in entreprises %}
+                <tr>
+                    <th>{{ entreprise.raisonsocialeEntreprise }}</th>
+                    <td>{{ entreprise.villeEntreprise }}</td>
+                    <td>{{ entreprise.cpEntreprise }}</td>
+                    <td>{{ entreprise.adresseEntreprise }}</td>
+                    <td>
+                        Téléphone: {{ entreprise.telephoneEntreprise }}<br>
+                        Fax: {{ entreprise.faxEntreprise }}</td>
+                    <td>{% if entreprise.siteEntreprise != null %} <a href="{{ entreprise.siteEntreprise }}">Lien
+                        </a>{%endif%}</td>
+                    <td>{{ entreprise.commentaireEntreprise }}</td>
+                    <td>
+                        <!-- Large modal -->
+                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target=".listeContact-modal-lg">Entreprise</button>
+                    </td>
+                    <td>
+                        <!-- Large modal -->
+                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target=".listeEleve-modal-lg">Eleve</button>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+
+    <div class="modal fade listeContact-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Contact de l'entreprise : </h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+
+                    <p>Modal body text goes here.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade listeEleve-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Contact de l'entreprise : </h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+
+                    <p>Modal body text goes here.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+    <script>
+
+        $(document).ready(function(){
+            $("#Search").on("keyup", function() {
+                var value = $(this).val().toLowerCase();
+                $("#TableEntreprise tr").filter(function() {
+                    $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+                });
+            });
+        });
+
+    </script>
+{% endblock %}
+

@@ -2,14 +2,13 @@
 
 namespace App\Entity;
 
-use App\Repository\EntrepriseType;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * Entreprise
  *
  * @ORM\Table(name="entreprise")
- * @ORM\Entity(repositoryClass=EntrepriseType::class)
+ * @ORM\Entity(repositoryClass="App\Repository\EntrepriseRepository")
  */
 class Entreprise
 {

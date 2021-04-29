@@ -2,14 +2,13 @@
 
 namespace App\Entity;
 
-use App\Repository\EtudiantType;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * Etudiant
  *
- * @ORM\Table(name="etudiant", indexes={@ORM\Index(name="FK_Etudiant_Formation", columns={"Formation_Etudiant"})})
- * @ORM\Entity(repositoryClass=EtudiantType::class)
+ * @ORM\Table(name="etudiant")
+ * @ORM\Entity
  */
 class Etudiant
 {
@@ -23,9 +22,9 @@ class Etudiant
     private $codeEtudiant;
 
     /**
-     * @var string|null
+     * @var string
      *
-     * @ORM\Column(name="Nom_Etudiant", type="string", length=38, nullable=true)
+     * @ORM\Column(name="Nom_Etudiant", type="string", length=38, nullable=false)
      */
     private $nomEtudiant;
 
@@ -37,46 +36,39 @@ class Etudiant
     private $nomdenaissanceEtudiant;
 
     /**
-     * @var string|null
+     * @var string
      *
-     * @ORM\Column(name="Prenom_Etudiant", type="string", length=38, nullable=true)
+     * @ORM\Column(name="Prenom_Etudiant", type="string", length=38, nullable=false)
      */
     private $prenomEtudiant;
 
     /**
-     * @var \DateTime|null
+     * @var \DateTime
      *
-     * @ORM\Column(name="DateDeNaissance_Etudiant", type="date", nullable=true)
+     * @ORM\Column(name="DateDeNaissance_Etudiant", type="date", nullable=false)
      */
     private $datedenaissanceEtudiant;
 
     /**
-     * @var string|null
+     * @var string
      *
-     * @ORM\Column(name="CodePostal_Etudiant", type="string", length=5, nullable=true, options={"fixed"=true})
+     * @ORM\Column(name="CodePostal_Etudiant", type="string", length=5, nullable=false, options={"fixed"=true})
      */
     private $codepostalEtudiant;
 
     /**
-     * @var string|null
+     * @var string
      *
-     * @ORM\Column(name="Ville_Etudiant", type="string", length=38, nullable=true)
+     * @ORM\Column(name="Ville_Etudiant", type="string", length=38, nullable=false)
      */
     private $villeEtudiant;
 
     /**
-     * @var string|null
+     * @var string
      *
-     * @ORM\Column(name="Adresse_Etudiant", type="string", length=38, nullable=true)
+     * @ORM\Column(name="Adresse_Etudiant", type="string", length=38, nullable=false)
      */
     private $adresseEtudiant;
-
-    /**
-     * @var int|null
-     *
-     * @ORM\Column(name="Formation_Etudiant", type="integer", nullable=true)
-     */
-    private $formationEtudiant;
 
     public function getCodeEtudiant(): ?int
     {
@@ -88,7 +80,7 @@ class Etudiant
         return $this->nomEtudiant;
     }
 
-    public function setNomEtudiant(?string $nomEtudiant): self
+    public function setNomEtudiant(string $nomEtudiant): self
     {
         $this->nomEtudiant = $nomEtudiant;
 
@@ -112,7 +104,7 @@ class Etudiant
         return $this->prenomEtudiant;
     }
 
-    public function setPrenomEtudiant(?string $prenomEtudiant): self
+    public function setPrenomEtudiant(string $prenomEtudiant): self
     {
         $this->prenomEtudiant = $prenomEtudiant;
 
@@ -124,7 +116,7 @@ class Etudiant
         return $this->datedenaissanceEtudiant;
     }
 
-    public function setDatedenaissanceEtudiant(?\DateTimeInterface $datedenaissanceEtudiant): self
+    public function setDatedenaissanceEtudiant(\DateTimeInterface $datedenaissanceEtudiant): self
     {
         $this->datedenaissanceEtudiant = $datedenaissanceEtudiant;
 
@@ -136,7 +128,7 @@ class Etudiant
         return $this->codepostalEtudiant;
     }
 
-    public function setCodepostalEtudiant(?string $codepostalEtudiant): self
+    public function setCodepostalEtudiant(string $codepostalEtudiant): self
     {
         $this->codepostalEtudiant = $codepostalEtudiant;
 
@@ -148,7 +140,7 @@ class Etudiant
         return $this->villeEtudiant;
     }
 
-    public function setVilleEtudiant(?string $villeEtudiant): self
+    public function setVilleEtudiant(string $villeEtudiant): self
     {
         $this->villeEtudiant = $villeEtudiant;
 
@@ -160,21 +152,9 @@ class Etudiant
         return $this->adresseEtudiant;
     }
 
-    public function setAdresseEtudiant(?string $adresseEtudiant): self
+    public function setAdresseEtudiant(string $adresseEtudiant): self
     {
         $this->adresseEtudiant = $adresseEtudiant;
-
-        return $this;
-    }
-
-    public function getFormationEtudiant(): ?int
-    {
-        return $this->formationEtudiant;
-    }
-
-    public function setFormationEtudiant(?int $formationEtudiant): self
-    {
-        $this->formationEtudiant = $formationEtudiant;
 
         return $this;
     }

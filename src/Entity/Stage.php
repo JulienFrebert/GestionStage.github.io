@@ -2,97 +2,81 @@
 
 namespace App\Entity;
 
-use App\Repository\StageRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * Stage
  *
- * @ORM\Table(name="stage", indexes={@ORM\Index(name="FK_Stage_Personnel", columns={"Code_Stage_Personnel"}), @ORM\Index(name="FK_Stage_Etudiant", columns={"Code_Stage_Etudiant"})})
- * @ORM\Entity(repositoryClass="App\Repository\Stage")
+ * @ORM\Table(name="stage", indexes={@ORM\Index(name="Code_Personnel_Stage", columns={"Code_Personnel_Stage"}), @ORM\Index(name="Code_Attrib_Etudiant_Etudiant", columns={"Code_Attrib_Etudiant_Etudiant", "Code_Attrib_Etudiant_Option", "Code_Attrib_Etudiant_Session"}), @ORM\Index(name="Code_Entreprise_Stage", columns={"Code_Entreprise_Stage"})})
+ * @ORM\Entity
  */
 class Stage
 {
     /**
      * @var int
      *
-     * @ORM\Column(name="Code_Stage_Entreprise", type="integer", nullable=false)
+     * @ORM\Column(name="Code_Stage", type="integer", nullable=false)
      * @ORM\Id
-     * @ORM\GeneratedValue(strategy="NONE")
+     * @ORM\GeneratedValue(strategy="IDENTITY")
      */
-    private $codeStageEntreprise;
+    private $codeStage;
 
     /**
-     * @var int
+     * @var \DateTime
      *
-     * @ORM\Column(name="Code_Stage_Etudiant", type="integer", nullable=false)
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="NONE")
-     */
-    private $codeStageEtudiant;
-
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="Code_Stage_Personnel", type="integer", nullable=false)
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="NONE")
-     */
-    private $codeStagePersonnel;
-
-    /**
-     * @var string|null
-     *
-     * @ORM\Column(name="AnneeCivile_Stage", type="string", length=4, nullable=true, options={"fixed"=true})
-     */
-    private $anneecivileStage;
-
-    /**
-     * @var \DateTime|null
-     *
-     * @ORM\Column(name="DateDebut_Stage", type="date", nullable=true)
+     * @ORM\Column(name="DateDebut_Stage", type="date", nullable=false)
      */
     private $datedebutStage;
 
     /**
-     * @var \DateTime|null
+     * @var \DateTime
      *
-     * @ORM\Column(name="DateFin_Stage", type="date", nullable=true)
+     * @ORM\Column(name="DateFin_Stage", type="date", nullable=false)
      */
     private $datefinStage;
 
     /**
-     * @var string|null
+     * @var string
      *
-     * @ORM\Column(name="Mission_Stage", type="text", length=65535, nullable=true)
+     * @ORM\Column(name="Mission_Stage", type="text", length=65535, nullable=false)
      */
     private $missionStage;
 
-    public function getCodeStageEntreprise(): ?int
-    {
-        return $this->codeStageEntreprise;
-    }
+    /**
+     * @var \Entreprise
+     *
+     * @ORM\ManyToOne(targetEntity="Entreprise")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="Code_Entreprise_Stage", referencedColumnName="Code_Entreprise")
+     * })
+     */
+    private $codeEntrepriseStage;
 
-    public function getCodeStageEtudiant(): ?int
-    {
-        return $this->codeStageEtudiant;
-    }
+    /**
+     * @var \Personnel
+     *
+     * @ORM\ManyToOne(targetEntity="Personnel")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="Code_Personnel_Stage", referencedColumnName="Code_Personnel")
+     * })
+     */
+    private $codePersonnelStage;
 
-    public function getCodeStagePersonnel(): ?int
-    {
-        return $this->codeStagePersonnel;
-    }
+    /**
+     * @var \AttributionEtudiant
+     *
+     * @ORM\ManyToOne(targetEntity="AttributionEtudiant")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="Code_Attrib_Etudiant_Etudiant", referencedColumnName="Code_Etudiant_Attrib"),
+     *   @ORM\JoinColumn(name="Code_Attrib_Etudiant_Option", referencedColumnName="Code_Option_Attrib"),
+     *   @ORM\JoinColumn(name="Code_Attrib_Etudiant_Session", referencedColumnName="Code_Session_Attrib")
+     * })
+     */
+    private $codeAttribEtudiantEtudiant;
 
-    public function getAnneecivileStage(): ?string
+    public function getCodeStage(): ?int
     {
-        return $this->anneecivileStage;
-    }
-
-    public function setAnneecivileStage(?string $anneecivileStage): self
-    {
-        $this->anneecivileStage = $anneecivileStage;
-
-        return $this;
+        return $this->codeStage;
     }
 
     public function getDatedebutStage(): ?\DateTimeInterface
@@ -100,7 +84,7 @@ class Stage
         return $this->datedebutStage;
     }
 
-    public function setDatedebutStage(?\DateTimeInterface $datedebutStage): self
+    public function setDatedebutStage(\DateTimeInterface $datedebutStage): self
     {
         $this->datedebutStage = $datedebutStage;
 
@@ -112,7 +96,7 @@ class Stage
         return $this->datefinStage;
     }
 
-    public function setDatefinStage(?\DateTimeInterface $datefinStage): self
+    public function setDatefinStage(\DateTimeInterface $datefinStage): self
     {
         $this->datefinStage = $datefinStage;
 
@@ -124,9 +108,45 @@ class Stage
         return $this->missionStage;
     }
 
-    public function setMissionStage(?string $missionStage): self
+    public function setMissionStage(string $missionStage): self
     {
         $this->missionStage = $missionStage;
+
+        return $this;
+    }
+
+    public function getCodeEntrepriseStage(): ?Entreprise
+    {
+        return $this->codeEntrepriseStage;
+    }
+
+    public function setCodeEntrepriseStage(?Entreprise $codeEntrepriseStage): self
+    {
+        $this->codeEntrepriseStage = $codeEntrepriseStage;
+
+        return $this;
+    }
+
+    public function getCodePersonnelStage(): ?Personnel
+    {
+        return $this->codePersonnelStage;
+    }
+
+    public function setCodePersonnelStage(?Personnel $codePersonnelStage): self
+    {
+        $this->codePersonnelStage = $codePersonnelStage;
+
+        return $this;
+    }
+
+    public function getCodeAttribEtudiantEtudiant(): ?AttributionEtudiant
+    {
+        return $this->codeAttribEtudiantEtudiant;
+    }
+
+    public function setCodeAttribEtudiantEtudiant(?AttributionEtudiant $codeAttribEtudiantEtudiant): self
+    {
+        $this->codeAttribEtudiantEtudiant = $codeAttribEtudiantEtudiant;
 
         return $this;
     }
